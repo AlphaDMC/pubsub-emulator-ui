@@ -72,4 +72,12 @@ export class ProjectsComponent implements OnInit {
     })
   }
 
+  handleDeleteSubscription(subscription: Subscription) {
+    console.log("Deleting subscription", subscription)
+    this.pubsub.deleteSubscription(subscription.name).subscribe(result => {
+      console.log("sub deleted ", subscription)
+      this.loadSubsFor(this.currentTopic!)
+    })
+  }
+
 }

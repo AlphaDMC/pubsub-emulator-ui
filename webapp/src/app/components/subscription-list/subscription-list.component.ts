@@ -17,6 +17,7 @@ export class SubscriptionListComponent implements OnInit {
   @Input() currentSubscription?: Subscription
   @Output() currentSubscriptionChange = new EventEmitter<Subscription>()
   @Output() newSubscriptionRequest = new EventEmitter<NewSubscriptionRequest>()
+  @Output() deleteSubscriptionRequest = new EventEmitter<Subscription>()
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -28,6 +29,12 @@ export class SubscriptionListComponent implements OnInit {
   selectSubscription(subscription: Subscription) {
     this.currentSubscription = subscription
     this.currentSubscriptionChange.emit(subscription)
+  }
+
+  deleteSubscription(subscription: Subscription) {
+    this.currentSubscription = undefined;
+    this.deleteSubscriptionRequest.emit(subscription);
+    
   }
 
   async newSubscription() {

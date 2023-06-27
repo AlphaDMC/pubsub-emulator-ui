@@ -8,7 +8,7 @@
                 <span> {{subscription.name}}
                 </span>
 
-                <mat-icon>arrow_right</mat-icon>
+                <mat-icon (click)="deleteSubscription(subscription)">delete</mat-icon>
             </div>
         </button>
     </ng-container>

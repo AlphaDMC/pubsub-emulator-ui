@@ -7,10 +7,10 @@ import { NewSubscriptionRequest } from '../components/subscription-list/new-subs
   providedIn: 'root'
 })
 export class PubsubService {
-  project_id = "test-project"
+  project_id = "wevr-local"
   public currentHost = "http://localhost:8681"
 
-  private _projectList = new BehaviorSubject<string[]>(["test-project"])
+  private _projectList = new BehaviorSubject<string[]>(["wevr-local"])
   private _currentProject = new ReplaySubject<string>()
   private _currentTopic = new ReplaySubject<Topic>()
   private _currentSubscription = new ReplaySubject<Subscription>()
@@ -22,9 +22,9 @@ export class PubsubService {
   public currentSubscription$ = this._currentSubscription.asObservable()
 
   constructor(private http: HttpClient) {
-
-    this.currentProject$.subscribe(project =>
+    this.currentProject$.subscribe(project => {
       this.topicList$ = this.listTopics(project)
+    }
     )
   }
 
@@ -46,7 +46,7 @@ export class PubsubService {
   }
 
   listTopics(projectId: string = this.project_id) {
-    return this.http.get<{ topics: Topic[] }>(`${this.currentHost}/v1/projects/${this.project_id}/topics`).pipe(map(incoming => incoming?.topics || []))
+    return this.http.get<{ topics: Topic[] }>(`${this.currentHost}/v1/projects/${projectId}/topics`).pipe(map(incoming => incoming?.topics || []))
   }
 
   createSubscription(projectId: string, request: NewSubscriptionRequest){
@@ -55,8 +55,8 @@ export class PubsubService {
     return this.http.put<Subscription>(url, {topic: request.topic, pushConfig: request.pushConfig})
   }
 
-  deleteSubscription(subscriptionPath: string){
-    const url = `${this.currentHost}/v1/${subscriptionPath}`
+  deleteSubscription(name: string){
+    const url = `${this.currentHost}/v1/${name}`
     return this.http.delete(url)
   }
 
